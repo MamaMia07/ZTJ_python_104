@@ -3,32 +3,21 @@ from tkinter import messagebox
 import random
 import numpy as np
 import time
-
-# zmiana  obramowania okienka entry
-##master = tk.Tk()
-##nameentryframe = tk.Frame(master = master, background = 'BLACK', borderwidth = 20, relief = tk.SUNKEN)
-##nameentry = tk.Entry(nameentryframe)
-##nameentryframe.pack()
-##nameentry.pack()
-##       
-##master.mainloop()
+import sudoku_board as sb
 
 
 def starting_gui_board():
-
     skip_row = 0
-
     for i in range(3):
         skip_col = 0
+
         for j in range(3):
-         
             frame1 = tk.Frame(frame,relief="groove",borderwidth=1 )
             frame1.grid(row=i, column=j, padx=1, pady=1)
-        
-        
+
             for n in range(3):
                 board_row = n + skip_row
-            
+
                 for m in range(3):
                     board_col = m + skip_col
                 
@@ -37,14 +26,9 @@ def starting_gui_board():
 
                     field = tk.Label(frameSq, width=3, font=('Arial 20'), bg='#FDFCFF', borderwidth=1, relief="groove")
                     field.grid(row=i, column=j)
-                
                   
             skip_col += 3
         skip_row += 3
-
-
-
-
 
 
 def generate_board():
@@ -53,18 +37,14 @@ def generate_board():
     return board
 
 
-
 # filling with 0 randomly choosen elements of board (board with numbers)
 def variant_game(board, empty_places):
     n=board.shape[0]
     np.put(board, np.random.choice(range(n*n), empty_places, replace=False), 0)
-   
-
-
+ 
 
 
 def is_num(ent):
-    
     if ent.strip() in ["1", "2", "3","4", "5", "6", "7", "8", "9"]:
        return True
     else:
@@ -76,16 +56,13 @@ def is_num(ent):
 def fill_gui_board(board, entries):
     # wypełnianie tablicy sudoku
 # zachowanie entries w liście, przypisanie im i i j z tablicy liczb
-
     skip_row = 0
-
     for i in range(3):
         skip_col = 0
         for j in range(3):
          
             frame1 = tk.Frame(frame,relief="groove",borderwidth=1 )
             frame1.grid(row=i, column=j, padx=1, pady=1)
-        
         
             for n in range(3):
                 board_row = n + skip_row
@@ -95,33 +72,24 @@ def fill_gui_board(board, entries):
                 
                     frameSq = tk.Frame(frame1, relief="groove", borderwidth=1)
                     frameSq.grid(row=n, column=m)
-
                                      
                     if board[board_row,board_col] == 0:                                                
                        field = tk.Entry(frameSq, width=3, bg='white',relief="flat",
-                                        font=('Arial 18'), justify = "center",
+                                        font=('Arial 20'), justify = "center",
                                         validatecommand=(frame.register(is_num), "%S"), validate = 'key')
                        field.grid(row=i, column=j)
 
                        entries.append([field, board_row, board_col])
-                
                
                     if board[board_row,board_col] != 0:
                         nmb_lbl = tk.Label(frameSq, width=3, font=('Arial 20'),
-                                   borderwidth=1, relief="flat", text=f'{board[board_row,board_col]}')
+                                   relief="flat", text=f'{board[board_row,board_col]}')
                         nmb_lbl.grid(row=i, column=j)
 
                         labels.append([nmb_lbl, board_row, board_col])
-
           
             skip_col += 3
         skip_row += 3
-
-
-
-
-
-
 
 
 
@@ -136,13 +104,13 @@ def insert_numbers(board,entries):
 
 
 
-
 def game_selected():
     global entries, labels, new_board
-
+    #starting_gui_board()
     entries = []
     labels = []
-    new_board = generate_board()
+    #new_board = generate_board()
+    new_board = sb.create_nb_board()
     choice  = var.get()
     variant_game(new_board, choice)
     fill_gui_board(new_board, entries)
@@ -157,23 +125,32 @@ def game_selected():
     
 
 
-
 def check_clicked():
-   check = tk.messagebox.askyesno("Check", "Do you want to Submit")
+   check = tk.messagebox.askyesno("Check", "Do you want to check your solution?")
    if check == True:
-       for ent in entries:
-           field= ent[0]
-           nb = field.get()
-           nb = nb.strip()
-           if nb in["1", "2", "3","4", "5", "6", "7", "8", "9"]:
-               print(nb)
-               nb = int(nb)
-               i ,j = ent[1], ent[2]
-               new_board[i,j] = nb
-           else:
-               field.delete(0,tk.END)
-           
-       print(new_board)
+    if len(entries)>0:
+        for ent in entries:
+            field= ent[0]
+            nb = field.get()
+            nb = nb.strip()
+            if nb in["1", "2", "3","4", "5", "6", "7", "8", "9"]:
+                print(nb)
+                nb = int(nb)
+                i ,j = ent[1], ent[2]
+                new_board[i,j] = nb
+            else:
+                field.delete(0,tk.END)
+      
+    print(new_board)
+# NAPRAWIC!!! BY 0 NIE UWZGLEDNIAL!!!!
+    sb.checking_unique(new_board)
+
+
+def exit_clicked():
+    check = tk.messagebox.askyesno("Exit", "Do you want to Exit?")
+    if check == True:
+        window.destroy()
+
 
 
 
@@ -186,9 +163,6 @@ window.title("Sudoku")
 
 
 # frames
-##frame0 = tk.Frame(window,relief = "flat")
-##frame0.grid(column=0, row=0, pady = 5)
-
 frame = tk.Frame(window, relief="raised", borderwidth=7, bg='#FDFCFF')
 frame.grid(column=0, row=1)
 
@@ -199,7 +173,7 @@ frame3 =tk.Frame(window, relief = "flat")#, width=150, height=400)
 frame3.grid(column=0, row=2)
 
 
-#widgets
+# widgets
 title_lbl = tk.Label(window, text="SUDOKU",font='Arial 20 bold' )
 title_lbl.grid(column=0, row=0)
 
@@ -209,7 +183,8 @@ check_btn = tk.Button(frame2, text="CHECK\nTHE SOLUTION",font='Ariala 12 bold', 
 check_btn.grid(column=0, row=5, padx=20, pady=30)
 
 
-btn_exit = tk.Button(frame3, text="EXIT",font='Arial 12 bold', fg="red", width = 20)
+btn_exit = tk.Button(frame3, text="EXIT",font='Arial 12 bold', fg="red", width = 20,
+                     command = exit_clicked)
 btn_exit.grid(column=0, row=3, sticky="we", padx = 20, pady = 20)
 
 
@@ -230,7 +205,7 @@ i=1
 for (var_game, val) in game_variants.items(): 
     radio_btn=tk.Radiobutton(frame2, text= var_game, variable=var, value= val,
                              command= game_selected, font=('Arial 13'),indicatoron = False,
-                             selectcolor= "blue", width=10)  
+                             selectcolor= "#8C8CFF", width=10)  
     radio_btn.grid(column=0, row=i, padx=60, pady=6, sticky ="w")
     #radio_btn.command = medium_game(board) #variable=v,
     i +=1
@@ -244,22 +219,15 @@ labels = []
 window.mainloop()
 
 
-#board = generate_board()
 
-
-##def fill_board(board):
-##    # wypełnianie tablicy sudoku
-##    for i in range(9):
-##        for j in range(9):
-##            #if board[i,j] == 0:
-##            field = tk.Entry(master=frame, width=3, font=('Arial 18'))
-##            field.grid(row=i, column=j)
-##            #field.insert(0,f'{board[i,j]}') 
-##            if board[i,j] != 0:
-##                nmb_lbl = tk.Label(master=frame, width=3, font=('Arial 18'), text=f'{board[i,j]}')
-##                nmb_lbl.grid(row=i, column=j)
-##    
-
+# zmiana  obramowania okienka entry
+##master = tk.Tk()
+##nameentryframe = tk.Frame(master = master, background = 'BLACK', borderwidth = 20, relief = tk.SUNKEN)
+##nameentry = tk.Entry(nameentryframe)
+##nameentryframe.pack()
+##nameentry.pack()
+##       
+##master.mainloop()
 
 
 
