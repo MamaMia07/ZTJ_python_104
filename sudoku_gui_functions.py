@@ -13,7 +13,7 @@ def starting_gui_board(frame):
         skip_col = 0
 
         for j in range(3):
-            frame1 = tk.Frame(frame,relief="groove",borderwidth=1 )
+            frame1 = tk.Frame(frame,relief="groove", borderwidth=1)
             frame1.grid(row=i, column=j, padx=1, pady=1)
 
             for n in range(3):
@@ -70,7 +70,7 @@ def fill_gui_board(board, entries, labels, frame):
         skip_col = 0
         for j in range(3):
          
-            frame1 = tk.Frame(frame,relief="groove",borderwidth=1 )
+            frame1 = tk.Frame(frame,relief="raised", borderwidth=1)
             frame1.grid(row=i, column=j, padx=1, pady=1)
         
             for n in range(3):

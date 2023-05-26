@@ -33,7 +33,7 @@ def check_clicked():
         sf.color_of_square_with_duplicates(squares, entries, labels)
        
     if len(rows)==0 and len(cols)==0 and len(squares) == 0:
-       msg = tk.messagebox.showinfo("Great!", "   GREAT!\n   GOOD JOB!")
+       msg = tk.messagebox.showinfo("Great!", "  GREAT! GOOD JOB!  ")
 
 
 
