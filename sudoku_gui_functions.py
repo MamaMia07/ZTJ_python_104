@@ -59,10 +59,11 @@ def clearFrame(frameX):
 
 
     
-
+# filling board with numbers
+# entries and labels with theit indices ale collected in lists
 def fill_gui_board(board, entries, labels, frame):
     ''' filling the sudocu board with numbers'''
-    # entries and labels with theit indices ale collected in lists
+    
     #clearFrame(frame)
     skip_row = 0
     for i in range(3):
@@ -98,30 +99,6 @@ def fill_gui_board(board, entries, labels, frame):
           
             skip_col += 3
         skip_row += 3
-
-
-
-##def insert_numbers(board,entries):
-##    for ent in entries:
-##        field= ent[0]
-##        nb = field.get()
-##        print(nb)
-##        nb = int(nb)
-##        i ,j = ent[1], ent[2]
-##        board[i,j] = nb
-
-
-
-##def game_selected():
-##    global entries, labels, new_board
-##    #starting_gui_board()
-##    entries = []
-##    labels = []
-##    #new_board = generate_board()
-##    new_board = sb.create_nb_board()
-##    choice  = var.get()
-##    variant_game(new_board, choice)
-##    fill_gui_board(new_board, entries, labels)
 
 
 
@@ -171,41 +148,4 @@ def color_of_square_with_duplicates(squares, entries, labels):
                     for label in labels:
                         if label[1] == square_indices[0][n] and label[2] == square_indices[1][m]:
                             label[0].configure(bg="#EC8686")
-
-
-
-##def check_clicked():
-##    insert_numbers_to_board()
-##    containing_duplicates= sb.checking_unique(new_board)
-##    print(containing_duplicates)
-##
-##    if len(containing_duplicates) > 0:
-##        rows = containing_duplicates[0]
-##        color_of_line_with_duplicates(rows, 1)
-##        print(len(rows))
-##
-##        cols = containing_duplicates[1]
-##        color_of_line_with_duplicates(cols, 2)
-##        print(len(cols))
-##
-##        squares = containing_duplicates[2]
-##        color_of_square_with_duplicates(squares)
-##        print(len(squares))
-##
-##    if len(rows)==0 and len(cols)==0 and len(squares) == 0:
-##       msg = tk.messagebox.showinfo("Great!", "   GREAT!\n   GOOD JOB!")
-
-
-
-##def exit_clicked():
-##    check = tk.messagebox.askyesno("Exit", "Do you want to Exit?")
-##    if check == True:
-##        window.destroy()
-
-
-
-
-
-
-
 

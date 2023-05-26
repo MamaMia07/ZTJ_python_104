@@ -34,7 +34,6 @@ def fill_board(board, numb, sq_index, numbers):
     
 
 
-
 # checking if there is 0 in row or doubled numbers
 def find_non_unique(board):
     '''finding rows with duplicates or with 0'''
@@ -73,7 +72,6 @@ def check_small_square(board):
 
 
 
-
 def create_nb_board():
     game_board = np.zeros([9,9], dtype = "int")
     numbers =[1,2,3,4,5,6,7,8,9]
@@ -92,7 +90,7 @@ def create_nb_board():
 
 
 
-# retyrns numbers of rowe, columns and indices of squares
+# retyrns numbers of rows, columns and indices of squares
 # with nonunique numbers
 def checking_unique(game_board):
     row_num = find_non_unique(game_board)
